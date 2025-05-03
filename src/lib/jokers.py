@@ -348,7 +348,8 @@ jokers = {
     },
     "j_joker": {
         "name": "Joker",
-        "text": "+4 Mult"
+        "text": "+4 Mult",
+        "image": "https://static.wikia.nocookie.net/balatrogame/images/e/ef/Joker.png"
     },
     "j_jolly": {
         "name": "Jolly Joker",
