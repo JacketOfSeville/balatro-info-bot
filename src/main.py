@@ -18,6 +18,10 @@ class Client(discord.Client):
         
         matches = re.findall(r"\[\[(.*?)\]\]", message.content)
         if matches:
+            embeds = []
+            author = "Balatro Information Bot"
+            footer = "Data extracted from game files"
+
             for match in matches:
                 print(f"Deteced: {match}")
                 result = build_reply(match)
@@ -35,13 +39,13 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result["image"])
 
-                        embed.set_footer(text = "cooter")
-                        embed.set_author(name = "Balatro Informa")
+                        embed.set_footer(text = footer)
+                        embed.set_author(name = author)
                         
                         embed.add_field(name = "Effect",value = result["text"])
                         embed.add_field(name = "Unlocked by",value = unlock)
 
-                        await message.reply(embed=embed)
+                        embeds.append(embed)
                     elif result["category"] == 'vouchers':
                         unlock = result.get('unlock', 'Available from the start')
                         image = result.get('image')
@@ -54,13 +58,97 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result["image"])
 
-                        embed.set_footer(text = "cooter")
-                        embed.set_author(name = "Balatro Information Bot")
+                        embed.set_footer(text = footer)
+                        embed.set_author(name = author)
                         
                         embed.add_field(name = "Effect",value = result["text"])
                         embed.add_field(name = "Unlocked by",value = unlock)
 
-                        await message.reply(embed=embed)
+                        embeds.append(embed)
+                    elif result["category"] == 'blinds':
+                        image = result.get('image')
+                        boss = result.get('boss', '')
+
+                        embed = discord.Embed(
+                            colour=discord.Colour.orange(),
+                            description = boss+"Boss Blind",
+                            title = result['name']
+                        )
+                        if image:
+                            embed.set_thumbnail(url = result["image"])
+
+                        embed.set_footer(text = footer)
+                        embed.set_author(name = author)
+                        
+                        embed.add_field(name = "Effect",value = result["text"])
+
+                        embeds.append(embed)
+                    elif result["category"] == 'tarots':
+                        image = result.get('image')
+
+                        embed = discord.Embed(
+                            colour=discord.Colour.purple(),
+                            description = "Tarot Card",
+                            title = result['name']
+                        )
+                        if image:
+                            embed.set_thumbnail(url = result["image"])
+
+                        embed.set_footer(text = footer)
+                        embed.set_author(name = author)
+                        
+                        embed.add_field(name = "Effect",value = result["text"])
+
+                        embeds.append(embed)
+                    elif result["category"] == 'spectrals':
+                        image = result.get('image')
+
+                        embed = discord.Embed(
+                            colour=discord.Colour.dark_blue(),
+                            description = "Spectral Card",
+                            title = result['name']
+                        )
+                        if image:
+                            embed.set_thumbnail(url = result["image"])
+
+                        embed.set_footer(text = footer)
+                        embed.set_author(name = author)
+                        
+                        embed.add_field(name = "Effect",value = result["text"])
+
+                        embeds.append(embed)
+                    elif result["category"] == 'planets':
+                        image = result.get('image')
+
+                        embed = discord.Embed(
+                            colour=discord.Colour.blue(),
+                            description = "Planet Card",
+                            title = result['name']
+                        )
+                        if image:
+                            embed.set_thumbnail(url = result["image"])
+
+                        embed.set_footer(text = footer)
+                        embed.set_author(name = author)
+                        
+                        embed.add_field(name = "Effect",value = result["text"])
+
+                        embeds.append(embed)
+                    else:
+                        print("Unknown Item")
+                else:
+                    embed = discord.Embed(
+                        colour=discord.Colour.darker_grey(),
+                        description = "Item not found in the database",
+                        title = match
+                    )
+
+                    embed.set_footer(text = footer)
+                    embed.set_author(name = author)
+
+                    embeds.append(embed)                    
+
+            await message.reply(embeds=embeds[:10])
         
 
 intents = discord.Intents.default()
