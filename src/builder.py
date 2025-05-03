@@ -23,7 +23,7 @@ def build_reply(input_string: str):
     for category, dataset in ALL_CATEGORIES.items():
         for obj_key, obj in dataset.items():
             name = obj.get("name", "").lower()
-            dist = levenshtein_distance(name, input_string)
+            dist = levenshtein_distance(name, input)
 
             if dist < min_distance:
                 min_distance = dist
