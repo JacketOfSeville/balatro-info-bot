@@ -6,7 +6,7 @@ from lib.tarots import tarots
 from lib.vouchers import vouchers
 from Levenshtein import distance as levenshtein_distance
 
-ALL_CATEGORIES = {
+CATEGORIES_TO_DATASETS = {
     'jokers': jokers,
     'blinds': blinds,
     'spectrals': spectrals,
@@ -15,25 +15,22 @@ ALL_CATEGORIES = {
     'planets': planets
 }
 
-def build_reply(input_string: str):
-    input = input_string.lower()
-    min_distance = float('inf')
+def build_reply(search_term: str):
+    input = search_term.lower()
+    lowest_difference_score = float('inf')
     best_match = None
 
-    for category, dataset in ALL_CATEGORIES.items():
-        for obj_key, obj in dataset.items():
-            name = obj.get("name", "").lower()
-            dist = levenshtein_distance(name, input)
+    for category, dataset in CATEGORIES_TO_DATASETS.items():
+        for card_id, card_data in dataset.items():
+            card_name = card_data.get("name", "").lower()
+            name_difference_score = levenshtein_distance(card_name, input)
 
-            if dist < min_distance:
-                min_distance = dist
-                best_match = obj.copy()
+            if name_difference_score < lowest_difference_score:
+                lowest_difference_score = name_difference_score
+                best_match = card_data.copy()
                 best_match["category"] = category
 
-                if 'bl_final' in obj_key:
+                if 'bl_final' in card_id:
                     best_match["boss"] = 'Final '
 
-    if min_distance > 5:
-        return None
-    
-    return best_match
+    return None if lowest_difference_score > 5 else best_match
