@@ -52,11 +52,13 @@ def find_best_match(search_term: str):
     return flatten_and_find_last(CATEGORIES_TO_DATASETS, is_best_match)
 
 def build_reply(search_term: str):
-    best_match, best_match_id, best_match_category = find_best_match(search_term)
+    best_match_info = find_best_match(search_term)
 
-    if best_match is None:
+    if best_match_info is None:
         return None
     
+    best_match, best_match_id, best_match_category = best_match_info
+
     return {
         **best_match,
         "category": best_match_category,
