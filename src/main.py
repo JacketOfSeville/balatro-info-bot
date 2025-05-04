@@ -8,6 +8,12 @@ from builder import build_reply
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 
+AUTHOR = 'Balatro Information Bot'
+FOOTER = 'Data extracted from game files'
+
+DEFALT_RARITY = 'Common'
+DEFALT_UNLOCK = 'Available from the start'
+
 class Client(discord.Client):
     async def on_ready(self):
         print(f'Logged in as {self.user}')
@@ -19,16 +25,14 @@ class Client(discord.Client):
         matches = re.findall(r'\[\[(.*?)\]\]', message.content)
         if matches:
             embeds = []
-            author = 'Balatro Information Bot'
-            footer = 'Data extracted from game files'
 
             for match in matches:
                 print(f'Deteced: {match}')
                 result = build_reply(match)
                 if result:
                     if result['category'] == 'jokers':
-                        rarity = result.get('rarity', 'Common')
-                        unlock = result.get('unlock', 'Available from the start')
+                        rarity = result.get('rarity', DEFALT_RARITY)
+                        unlock = result.get('unlock', DEFALT_UNLOCK)
                         image = result.get('image')
 
                         embed = discord.Embed(
@@ -39,15 +43,15 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result['image'])
 
-                        embed.set_footer(text = footer)
-                        embed.set_author(name = author)
+                        embed.set_footer(text = FOOTER)
+                        embed.set_author(name = AUTHOR)
                         
                         embed.add_field(name = 'Effect',value = result['text'])
                         embed.add_field(name = 'Unlocked by',value = unlock)
 
                         embeds.append(embed)
                     elif result['category'] == 'vouchers':
-                        unlock = result.get('unlock', 'Available from the start')
+                        unlock = result.get('unlock', DEFALT_UNLOCK)
                         image = result.get('image')
 
                         embed = discord.Embed(
@@ -58,8 +62,8 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result['image'])
 
-                        embed.set_footer(text = footer)
-                        embed.set_author(name = author)
+                        embed.set_footer(text = FOOTER)
+                        embed.set_author(name = AUTHOR)
                         
                         embed.add_field(name = 'Effect',value = result['text'])
                         embed.add_field(name = 'Unlocked by',value = unlock)
@@ -77,8 +81,8 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result['image'])
 
-                        embed.set_footer(text = footer)
-                        embed.set_author(name = author)
+                        embed.set_footer(text = FOOTER)
+                        embed.set_author(name = AUTHOR)
                         
                         embed.add_field(name = 'Effect',value = result['text'])
 
@@ -94,8 +98,8 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result['image'])
 
-                        embed.set_footer(text = footer)
-                        embed.set_author(name = author)
+                        embed.set_footer(text = FOOTER)
+                        embed.set_author(name = AUTHOR)
                         
                         embed.add_field(name = 'Effect',value = result['text'])
 
@@ -111,8 +115,8 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result['image'])
 
-                        embed.set_footer(text = footer)
-                        embed.set_author(name = author)
+                        embed.set_footer(text = FOOTER)
+                        embed.set_author(name = AUTHOR)
                         
                         embed.add_field(name = 'Effect',value = result['text'])
 
@@ -128,8 +132,8 @@ class Client(discord.Client):
                         if image:
                             embed.set_thumbnail(url = result['image'])
 
-                        embed.set_footer(text = footer)
-                        embed.set_author(name = author)
+                        embed.set_footer(text = FOOTER)
+                        embed.set_author(name = AUTHOR)
                         
                         embed.add_field(name = 'Effect',value = result['text'])
 
@@ -143,8 +147,8 @@ class Client(discord.Client):
                         title = match
                     )
 
-                    embed.set_footer(text = footer)
-                    embed.set_author(name = author)
+                    embed.set_footer(text = FOOTER)
+                    embed.set_author(name = AUTHOR)
 
                     embeds.append(embed)                    
 
